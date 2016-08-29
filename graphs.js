@@ -1,15 +1,18 @@
+const Queue = require('./queue');
+const Dictionary = require('./dictionary');
+
 function Graph() {
   const vertices = [];
-  const adjacentList = new Map();
+  const adjacentList = new Dictionary();
 
   function initializeColor() {
-    const colors = [];
+    const color = [];
 
     for(let i = 0; i < vertices.length; i++) {
-      colors[vertices[i]] = 'white';
+      color[vertices[i]] = 'white';
     }
     
-    return colors;
+    return color;
   }
 
   this.addVertex = function(v) {
@@ -41,12 +44,13 @@ function Graph() {
 
   this.bfs = function(v, callback) {
     const color = initializeColor();
-    const queue = new Map();
-    queue.enqueue(color[v]);
+    const queue = new Queue();
+    queue.enqueue(v);
 
     while(!queue.isEmpty()) {
       let u = queue.dequeue();
       let neighbors = adjacentList.get(u);
+      
       color[u] = 'grey';
 
       for (let i = 0; i < neighbors.length; i++) {
@@ -77,10 +81,9 @@ for (let i = 0; i < myVerts.length; i++) {
   graph.addVertex(myVerts[i]);
 }
 
-  function printNode(value) {
-    console.log('visited vertex', value);
-  }
-
+function printNode(value) {
+  console.log('visited vertex', value);
+}
 
 graph.addEdge('A', 'B');
 graph.addEdge('A', 'C');
@@ -92,7 +95,5 @@ graph.addEdge('D', 'H');
 graph.addEdge('B', 'E');
 graph.addEdge('B', 'F');
 graph.addEdge('E', 'I');
-
-console.log(graph.toString());
 
 graph.bfs(myVerts[0], printNode);
